@@ -61,8 +61,10 @@ try:
 #             else:
 #                 print(soup.select_one('div.flash').string + '\n--------------------------')
 
+        time.sleep(0.2)
+
         # 表示
-#        cv2.imshow("frame", frame)
+        # cv2.imshow("frame", frame)
 
 
 except KeyboardInterrupt:

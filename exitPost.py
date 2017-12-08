@@ -1,5 +1,5 @@
 # coding: utf-8
-import cv2, time, requests, numpy as np
+import cv2, requests, numpy as np
 from datetime import datetime
 from bs4 import BeautifulSoup as bs
 
@@ -14,11 +14,12 @@ img = np.zeros((480,640,3), np.uint8)
 
 # OpenCVに用意されている顔認識するためのxmlファイルのパス
 # cascade_path = "/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml"
+# cascade_path = "/home/myjlab/.pyenv/versions/3.6.0/envs/labolog/lib/python3.6/site-packages/cv2/data/haarcascade_frontalface_alt.xml"
 cascade_path = "/usr/share/opencv/haarcascades/haarcascade_frontalface_default.xml"
-
+eye_cascade_path = "/usr/share/opencv/haarcascades/haarcascade_eye.xml"
 # カスケード分類器の特徴量を取得する
 cascade = cv2.CascadeClassifier(cascade_path)
-
+eye_cascade = cv2.CascadeClassifier(eye_cascade_path)
 
 # 顔に表示される枠の色を指定（白色）
 color = (255,255,255)
@@ -38,7 +39,6 @@ try:
 
         if len(facerect) > 0:
             for rect in facerect:
-                print('--------------------------\n誰か出てった！')
                 cv2.rectangle(frame, tuple(rect[0:2]), tuple(rect[0:2]+rect[2:4]), color, thickness=2)
                 x = rect[0]
                 y = rect[1]
@@ -46,26 +46,37 @@ try:
                 height = rect[3]
                 dst = frame[y:y+height, x:x+width]
 
-                # 顔画像を切り出して書き出し
-                path = "cutFaces/raw/face" + str(datetime.now()) + "(" + str(count) + ").jpg"
-                cv2.imwrite(path, dst)
-                count += 1
+                eyes = eye_cascade.detectMultiScale(dst)
+                for (ex, ey, ew, eh) in eyes:
+                    # 顔画像を切り出して書き出し
+                    path = "cutFaces/raw/face" + str(datetime.now()) + "(" + str(count) + ").jpg"
+                    cv2.imwrite(path, dst)
+                    count += 1
+                    # cv2.rectangle(dst, (ex, ey), (ex + ew, ey + eh), color, 2)
 
-#             # post
-#             image = open(path, 'rb')
-#             files = {'exit_face': ('filename.jpg', image, 'image/jpeg')}
-#             r = requests.post(url, files=files, data=data)
-#             soup = bs(r.text, 'html.parser')
-#             if (soup.select_one('div.flash') is None):
-#                 print('気がした\n--------------------------')
-#             else:
-#                 print(soup.select_one('div.flash').string + '\n--------------------------')
+                    print('--------------------------\n誰か出てった！')
 
-        time.sleep(0.5)
+            # # post
+            # image = open(path, 'rb')
+            # files = {'exit_face': ('filename.jpg', image, 'image/jpeg')}
+            # r = requests.post(url, files=files, data=data)
+            # soup = bs(r.text, 'html.parser')
+            # if (soup.select_one('div.flash') is None):
+            #     print('気がした\n--------------------------')
+            # else:
+            #     print(soup.select_one('div.flash').string + '\n--------------------------')
+
 
         # 表示
         # cv2.imshow("frame", frame)
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     break
 
+    print()
+    print('finish')
+    # 内蔵カメラを終了
+    cap.release()
+    cv2.destroyAllWindows()
 
 except KeyboardInterrupt:
     print()

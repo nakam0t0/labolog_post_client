@@ -46,6 +46,7 @@ try:
                 height = rect[3]
                 dst = frame[y:y+height, x:x+width]
 
+<<<<<<< HEAD
                 eyes = eye_cascade.detectMultiScale(dst)
                 for (ex, ey, ew, eh) in eyes:
                     # 顔画像を切り出して書き出し

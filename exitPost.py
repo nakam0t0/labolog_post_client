@@ -13,9 +13,15 @@ cap = cv2.VideoCapture(0)
 img = np.zeros((480,640,3), np.uint8)
 
 # OpenCVに用意されている顔認識するためのxmlファイルのパス
-cascade_path = "/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml"
+# cascade_path = "/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml"
+cascade_path = "/usr/share/opencv/haarcascades/haarcascade_frontalface_default.xml"
+
 # カスケード分類器の特徴量を取得する
-cascade = cv2.CascadeClassifier(cascade_path)
+try:
+    cascade = cv2.CascadeClassifier(cascade_path)
+
+except:
+    print('failed')
 
 # 顔に表示される枠の色を指定（白色）
 color = (255,255,255)
@@ -45,15 +51,15 @@ while True:
             cv2.imwrite(path, dst)
             count += 1
 
-            # post
-            image = open(path, 'rb')
-            files = {'exit_face': ('filename.jpg', image, 'image/jpeg')}
-            r = requests.post(url, files=files, data=data)
-            soup = bs(r.text, 'html.parser')
-            if (soup.select_one('div.flash') is None):
-                print('気がした\n--------------------------')
-            else:
-                print(soup.select_one('div.flash').string + '\n--------------------------')
+#             # post
+#             image = open(path, 'rb')
+#             files = {'exit_face': ('filename.jpg', image, 'image/jpeg')}
+#             r = requests.post(url, files=files, data=data)
+#             soup = bs(r.text, 'html.parser')
+#             if (soup.select_one('div.flash') is None):
+#                 print('気がした\n--------------------------')
+#             else:
+#                 print(soup.select_one('div.flash').string + '\n--------------------------')
 
     # 表示
     cv2.imshow("frame", frame)

@@ -59,8 +59,8 @@ try:
 #             else:
 #                 print(soup.select_one('div.flash').string + '\n--------------------------')
 
-        time.sleep(0.2)
- 
+        time.sleep(0.5)
+
         # 表示
         # cv2.imshow("frame", frame)
 

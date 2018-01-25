@@ -62,7 +62,10 @@ try:
         time.sleep(0.5)
 
         # 表示
-        # cv2.imshow("frame", frame)
+        cv2.imshow("frame", frame)
+        key = cv2.waitKey(0)
+        if key:
+            cv2.destroyAllWindows()
 
 except KeyboardInterrupt:
     print()

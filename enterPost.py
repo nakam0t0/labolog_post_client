@@ -13,7 +13,8 @@ cap = cv2.VideoCapture(1)
 img = np.zeros((480,640,3), np.uint8)
 
 # OpenCVに用意されている顔認識するためのxmlファイルのパス
-cascade_path = "/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml"
+# cascade_path = "/usr/local/share/OpenCV/haarcascades/haarcascade_frontalface_alt.xml"
+cascade_path = "/home/myjlab/.pyenv/versions/3.6.0/envs/labolog/lib/python3.6/site-packages/cv2/data/haarcascade_frontalface_alt.xml"
 # カスケード分類器の特徴量を取得する
 cascade = cv2.CascadeClassifier(cascade_path)
 
@@ -44,16 +45,16 @@ while True:
             path = "cutFaces/raw/face" + str(datetime.now()) + "(" + str(count) + ").jpg"
             cv2.imwrite(path, dst)
             count += 1
-            # post
-            image = open(path, 'rb')
-            files = {'enter_face': ('filename.jpg', image, 'image/jpeg')}
-            r = requests.post(url, files=files, data=data)
-            soup = bs(r.text, 'html.parser')
-            if (soup.select_one('div.flash') is None):
-                print('気がした\n--------------------------')
-            else:
-                print(soup.select_one('div.flash').string + '\n--------------------------')
-
+#             # post
+#             image = open(path, 'rb')
+#             files = {'enter_face': ('filename.jpg', image, 'image/jpeg')}
+#             r = requests.post(url, files=files, data=data)
+#             soup = bs(r.text, 'html.parser')
+#             if (soup.select_one('div.flash') is None):
+#                 print('気がした\n--------------------------')
+#             else:
+#                 print(soup.select_one('div.flash').string + '\n--------------------------')
+# 
     # 表示
     cv2.imshow("frame", frame)
       
